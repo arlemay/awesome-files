@@ -54,7 +54,7 @@ editor_cmd = terminal .. " -e " .. editor
 -- If you do not like this or do not have such a key,
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
-modkey = "Mod4"
+modkey = "Mod1"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
@@ -253,9 +253,14 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
-    awful.key({ modkey, "Shift"       }, "g", function () awful.util.spawn("/home/alemay/bin/g_select") end),
 
+-- Google Select
+    awful.key({ modkey, "Shift"       }, "g", function () awful.util.spawn("/home/alemay/bin/g_select") end),
+-- Ticket Select
     awful.key({ modkey, "Shift"       }, "t", function () awful.util.spawn("/home/alemay/bin/t_select") end),
+-- Open URL in firefox Select
+    awful.key({ modkey, "Shift"       }, "a", function () awful.util.spawn("/home/alemay/bin/f_select") end),
+
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
 
