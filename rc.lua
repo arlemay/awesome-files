@@ -260,6 +260,9 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"       }, "t", function () awful.util.spawn("/home/alemay/bin/t_select") end),
 -- Open URL in firefox Select
     awful.key({ modkey, "Shift"       }, "a", function () awful.util.spawn("/home/alemay/bin/f_select") end),
+-- Beaker select
+    awful.key({ modkey, "Shift"       }, "b", function () awful.util.spawn("/home/alemay/bin/b_select") end),
+       
 
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
