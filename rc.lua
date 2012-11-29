@@ -8,6 +8,7 @@ require("beautiful")
 require("naughty")
 require("vicious")
 require("helpers")
+require("sharetags")
 --require("awesompd/awesompd")
 
 -- {{{ Error handling
@@ -37,8 +38,8 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
+--beautiful.init("/home/alemay/.config/awesome/theme.lua")
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
-
 -- This is used later as the default terminal and editor to run.
 terminal = "/home/alemay/bin/xterm-switch"
 terminal1 ="/home/alemay/bin/newrandxterm.pl"
@@ -134,8 +135,8 @@ end
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
-    awful.layout.suit.floating,
     awful.layout.suit.tile,
+    awful.layout.suit.floating,
     awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
     awful.layout.suit.tile.top,
@@ -151,12 +152,35 @@ layouts =
 
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
-tags = {}
-for s = 1, screen.count() do
+--tags = {}
+--for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"  }, s, layouts[1])
-end
--- }}}
+  --  tags[s] = awful.tag({ "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"  }, s, layouts[1])
+--end
+-- }}}i
+-- New tag section
+
+
+-- {{{ Tags
+ tags = {
+   settings = {
+     { names  = { "fox", "google", 3, 4 },
+       layout = { layouts[2], layouts[1], layouts[1], layouts[4] }
+     },
+     { names  = { "mail", "irc", 6 ,  "media", "sea" },
+       layout = { layouts[3], layouts[2], layouts[2], layouts[5], layouts[5] }
+ }}}
+ 
+ for s = 1, screen.count() do
+     tags[s] = awful.tag(tags.settings[s].names, s, tags.settings[s].layout)
+ end
+ -- }}}
+
+
+
+
+
+
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
@@ -185,6 +209,10 @@ netwidget = widget({ type = "textbox" })
 vicious.register(netwidget, vicious.widgets.net, '<span color="#CC9393">${em1 down_kb}</span> <span color="#7F9F7F">${em1 up_kb}</span>', 3)
 
 mytextclock = awful.widget.textclock({ align = "right" })
+ dnicon = widget({ type = "imagebox" })
+ upicon = widget({ type = "imagebox" })
+ dnicon.image = image(beautiful.widget_net)
+ upicon.image = image(beautiful.widget_netup)
 
 -- Create a systray
 mysystray = widget({ type = "systray" })
@@ -265,10 +293,8 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
-	mpdwidget and spacer,
-	 mpdwidget or nil,
-	netwidget,
-	 s == 1 and mysystray or nil,
+	upicon, netwidget, dnicon,
+	s == 1 and mysystray or nil,
         mytasklist[s],
 	layout = awful.widget.layout.horizontal.rightleft
     }
