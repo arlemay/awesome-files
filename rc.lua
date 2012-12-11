@@ -9,7 +9,6 @@ require("naughty")
 require("vicious")
 require("helpers")
 require("sharetags")
---require("awesompd/awesompd")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -60,77 +59,18 @@ editor_cmd = terminal .. " -e " .. editor
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod1"
 
---
---  require("awesompd/awesompd")
---  musicwidget = awesompd:create() -- Create awesompd widget
---  musicwidget.font = "Liberation Mono" -- Set widget font 
---  musicwidget.scrolling = true -- If true, the text in the widget will be scrolled
---  musicwidget.output_size = 30 -- Set the size of widget in symbols
---  musicwidget.update_interval = 10 -- Set the update interval in seconds
---  -- Set the folder where icons are located (change username to your login name)
---  musicwidget.path_to_icons = "/home/username/.config/awesome/awesompd/icons" 
---  -- Set the default music format for Jamendo streams. You can change
---  -- this option on the fly in awesompd itself.
---  -- possible formats: awesompd.FORMAT_MP3, awesompd.FORMAT_OGG
---  musicwidget.jamendo_format = awesompd.FORMAT_MP3
---  -- If true, song notifications for Jamendo tracks and local tracks will also contain
---  -- album cover image.
---  musicwidget.show_album_cover = true
---  -- Specify how big in pixels should an album cover be. Maximum value
---  -- is 100.
---  musicwidget.album_cover_size = 50
---  -- This option is necessary if you want the album covers to be shown
---  -- for your local tracks.
---  musicwidget.mpd_config = "/home/username/.mpdconf"
---  -- Specify the browser you use so awesompd can open links from
---  -- Jamendo in it.
---  musicwidget.browser = "firefox"
---  -- Specify decorators on the left and the right side of the
---  -- widget. Or just leave empty strings if you decorate the widget
---  -- from outside.
---  musicwidget.ldecorator = " "
---  musicwidget.rdecorator = " "
---  -- Set all the servers to work with (here can be any servers you use)
---  musicwidget.servers = {
---     { server = "localhost",
---          port = 6666 },
---           }
---  -- Set the buttons of the widget
---  musicwidget:register_buttons({ { "", awesompd.MOUSE_LEFT, musicwidget:command_toggle() },
---      			         { "Control", awesompd.MOUSE_SCROLL_UP, musicwidget:command_prev_track() },
--- 			         { "Control", awesompd.MOUSE_SCROLL_DOWN, musicwidget:command_next_track() },
--- 			         { "", awesompd.MOUSE_SCROLL_UP, musicwidget:command_volume_up() },
--- 			         { "", awesompd.MOUSE_SCROLL_DOWN, musicwidget:command_volume_down() },
--- 			         { "", awesompd.MOUSE_RIGHT, musicwidget:command_show_menu() },
---                                 { "", "XF86AudioLowerVolume", musicwidget:command_volume_down() },
---                                 { "", "XF86AudioRaiseVolume", musicwidget:command_volume_up() },
---                                 { modkey, "Pause", musicwidget:command_playpause() } })
---  musicwidget:run() -- After all configuration is done, run the widget
---
-
-
--- {{{ mpd
-
-if whereis_app('curl') and whereis_app('mpd') then
-	mpdwidget = widget({ type = "textbox" })
-	vicious.register(mpdwidget, vicious.widgets.mpd,
-		function (widget, args)
-			if args["{state}"] == "Stop" or args["{state}"] == "Pause" or args["{state}"] == "N/A"
-				or (args["{Artist}"] == "N/A" and args["{Title}"] == "N/A") then return ""
-			else return '<span color="white">музыка:</span> '..
-			     args["{Artist}"]..' - '.. args["{Title}"]
-			end
-		end
-	)
-end
-
--- }}}
-
-
-
-
-
-
+  
+-- Initialize widget
+mpdwidget = widget({ type = "textbox" })
+-- Register widget
+vicious.register(mpdwidget, vicious.widgets.mpd,
+    function (widget, args)
+        if args["{state}"] == "Stop" then 
+            return " - "
+        else 
+            return args["{Artist}"]..' - '.. args["{Title}"]
+        end
+    end, 10)
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
@@ -172,7 +112,8 @@ layouts =
  }}}
  
  for s = 1, screen.count() do
-     tags[s] = awful.tag(tags.settings[s].names, s, tags.settings[s].layout)
+ -- if screen.count() > 1 then
+  tags[s] = awful.tag(tags.settings[s].names, s, tags.settings[s].layout)
  end
  -- }}}
 
@@ -281,7 +222,37 @@ for s = 1, screen.count() do
                                               return awful.widget.tasklist.label.currenttags(c, s)
                                           end, mytasklist.buttons)
 
-    -- Create the wibox
+
+
+-- {{{ Wibox
+-- {{{ Widgets configuration
+-- {{{ Reusable separators
+local spacer         = widget({ type = "textbox", name = "spacer" })
+local separator      = widget({ type = "textbox", name = "separator" })
+spacer.text    = " "
+separator.text = " <span foreground='red'>•</span> "
+-- }}}
+
+-- {{{ CPU load 
+local cpuwidget = widget({ type = "textbox" })
+vicious.register(cpuwidget, vicious.widgets.cpu, "<span foreground='orange'>load: </span><span foreground='green'>$2%</span><span foreground='orange'> - </span><span foreground='green'>$3%</span><span foreground='orange'> - </span><span foreground='green'>$4%</span><span foreground='orange'> - </span><span foreground='green'>$5%</span>")
+-- }}}
+
+
+-- {{{ Battery state
+-- Widget icon
+-- baticon       = widget({ type = "imagebox", name = "baticon" })
+-- baticon.image = image(beautiful.widget_bat)
+local batwidget     = widget({ type = "textbox" })
+vicious.register(batwidget, vicious.widgets.bat, "<span foreground='orange'>bat: </span><span foreground='green'>$1$2%</span>", 60, "BAT0")
+-- }}}
+
+-- {{{ CPU temperature
+local thermalwidget  = widget({ type = "textbox" })
+vicious.register(thermalwidget, vicious.widgets.thermal, "<span foreground='orange'>temp: </span><span foreground='green'>$1°C</span>", 20, "thermal_zone0")
+-- }}}
+    
+	-- Create the wibox
     mywibox[s] = awful.wibox({ position = "top", screen = s })
     -- Add widgets to the wibox - order matters
     mywibox[s].widgets = {
@@ -293,7 +264,11 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
-	upicon, netwidget, dnicon,
+		separator, thermalwidget,
+		separator, cpuwidget,
+		separator, batwidget, separator,
+		upicon, netwidget, dnicon, separator,
+		mpdwidget, separator,
 	s == 1 and mysystray or nil,
         mytasklist[s],
 	layout = awful.widget.layout.horizontal.rightleft
