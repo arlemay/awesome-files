@@ -159,7 +159,8 @@ mytextclock = awful.widget.textclock({ align = "right" })
 mysystray = widget({ type = "systray" })
 
 -- Create a wibox for each screen and add it
-mywibox = {}
+my_top_wibox = {}
+my_bottom_wibox ={}
 mypromptbox = {}
 mylayoutbox = {}
 mytaglist = {}
@@ -253,16 +254,16 @@ vicious.register(thermalwidget, vicious.widgets.thermal, "<span foreground='oran
 -- }}}
     
 	-- Create the wibox
-    mywibox[s] = awful.wibox({ position = "top", screen = s })
-    -- Add widgets to the wibox - order matters
-    mywibox[s].widgets = {
+my_top_wibox[s] = awful.wibox({ position = "top", screen = s, height=16 })  
+  -- Add widgets to the wibox - order matters
+my_top_wibox[s].widgets = {
         {
-            mylauncher,
-            mytaglist[s],
-            mypromptbox[s],
+            	mylauncher,
+        	mytaglist[s],
+	        mypromptbox[s],
             layout = awful.widget.layout.horizontal.leftright
         },
-        mylayoutbox[s],
+    mylayoutbox[s],
         mytextclock,
 		separator, thermalwidget,
 		separator, cpuwidget,
@@ -273,6 +274,22 @@ vicious.register(thermalwidget, vicious.widgets.thermal, "<span foreground='oran
         mytasklist[s],
 	layout = awful.widget.layout.horizontal.rightleft
     }
+--my_bottom_wibox[s] = awful.wibox({ position= "top",screen = s, height = 16 })
+--    awful.screen.padding(screen[s],{top = 24})
+  --  my_bottom_wibox[s].x=0
+   -- my_bottom_wibox[s].y=20
+   -- my_bottom_wibox[s].widgets = {
+       -- {
+--	separator,
+--	mytaglist[s],
+--	separator,
+--	mypromptbox[s],
+--      separator,    
+       -- },
+--	separator,
+--	mytasklist[s],
+     --   layout = awful.widget.layout.horizontal.rightleft
+  --  }
 end
 -- }}}
 
