@@ -3,7 +3,7 @@ run_once("nm-applet")
 run_once("/home/alemay/.dropbox-dist/.dropbox")
 run_once("volumeicon")
 run_once("xfce4-power-manager")
-run_once("nitrogen", "--restore")
+--run_once("nitrogen", "--restore")
 
 --run_once("conky")
 --run_once("conky", "-c /home/alemay/.conky/conky_rings", "-a bottom_middle")
