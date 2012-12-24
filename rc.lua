@@ -105,7 +105,7 @@ layouts =
  tags = {
    settings = {
      { names  = { "fox", "google", 3, 4 },
-       layout = { layouts[2], layouts[1], layouts[1], layouts[4] }
+       layout = { layouts[1], layouts[1], layouts[1], layouts[4] }
      },
      { names  = { "mail", "irc", 6 ,  "media", "sea" },
        layout = { layouts[3], layouts[2], layouts[2], layouts[5], layouts[5] }
