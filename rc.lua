@@ -106,11 +106,11 @@ layouts =
 --- This works good for two monitors but not when switching back to one
  tags = {
    settings = {
-     { names  = { "fox", "google", 3, 4 },
-       layout = { layouts[1], layouts[1], layouts[1], layouts[4] }
+     { names  = { "fox", "google", 3, 4,  5, 6},
+       layout = { layouts[2], layouts[2], layouts[2], layouts[2], layouts[2], layouts[2]}
      },
-     { names  = { "mail", "irc", 6 ,  "media", "sea" },
-       layout = { layouts[3], layouts[2], layouts[2], layouts[5], layouts[5] }
+     { names  = { "7", "8", "9" ,  "10", "mpd" },
+       layout = { layouts[1], layouts[1], layouts[1], layouts[1], layouts[1] }
  }}}
  
  for s = 1, screen.count() do
@@ -396,6 +396,8 @@ globalkeys = awful.util.table.join(
 -- Beaker select
     awful.key({ modkey, "Shift"       }, "b", function () awful.util.spawn("/home/alemay/bin/b_select") end),
        
+-- Beaker select
+    awful.key({ modkey, "Shift"       }, "z", function () awful.util.spawn("/home/alemay/bin/bug_select") end),
 
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
