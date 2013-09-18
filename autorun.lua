@@ -1,6 +1,6 @@
 run_once("xscreensaver", "-no-splash")         -- starts screensaver daemon 
 run_once("nm-applet")
-run_once("/home/alemay/.dropbox-dist/.dropbox")
+run_once("~/.dropbox-dist/./dropbox")
 run_once("volumeicon")
 run_once("xfce4-power-manager")
 --run_once("nitrogen", "--restore")
