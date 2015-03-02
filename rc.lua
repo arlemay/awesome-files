@@ -286,15 +286,15 @@ globalkeys = awful.util.table.join(
      awful.key({ modkey, "Control" }, "l", function () awful.util.spawn("xscreensaver-command -lock") end),
  --
  --    -- Google Select
-    awful.key({ modkey, "Shift"       }, "g", function () awful.util.spawn("/home/alemay/bin/g_select") end),
+    awful.key({ modkey, "Shift"       }, "g", function () awful.util.spawn("~/bin/g_select") end),
  --      -- Ticket Select
-      awful.key({ modkey, "Shift"       }, "t", function () awful.util.spawn("/home/alemay/bin/t_select") end),
+      awful.key({ modkey, "Shift"       }, "t", function () awful.util.spawn("~/bin/t_select") end),
  --      -- Open URL in firefox Select
-      awful.key({ modkey, "Shift"       }, "a", function () awful.util.spawn("/home/alemay/bin/f_select") end),
+      awful.key({ modkey, "Shift"       }, "a", function () awful.util.spawn("~/bin/f_select") end),
  --      -- Beaker select
-      awful.key({ modkey, "Shift"       }, "b", function () awful.util.spawn("/home/alemay/bin/b_select") end),
+      awful.key({ modkey, "Shift"       }, "b", function () awful.util.spawn("~/bin/b_select") end),
  --      -- Bugzilla select
-       awful.key({ modkey, "Shift"       }, "z", function () awful.util.spawn("/home/alemay/bin/bug_select") end),
+       awful.key({ modkey, "Shift"       }, "z", function () awful.util.spawn("~/bin/bug_select") end),
  --
 
     -- Prompt
